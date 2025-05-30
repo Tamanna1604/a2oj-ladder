@@ -1,0 +1,21 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build and Run Java",
+            "type": "shell",
+            "windows": {
+                "command": "& 'C:\\Program Files\\Java\\jdk-24\\bin\\javac.exe' ${file} ; & 'C:\\Program Files\\Java\\jdk-24\\bin\\java.exe' ${fileBasenameNoExtension}"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": "$javac"
+        }
+    ]
+} 
