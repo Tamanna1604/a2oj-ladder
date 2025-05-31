@@ -28,23 +28,55 @@ public class Main {
 
     static void solve() {
         int n = in.nextInt();
-        int m= in.nextInt();
-        int[] arr = new int[m];
-        for(int i=0;i<m;i++){
-            arr[i] = in.nextInt();
+        if (n < 3) {
+            out.println("0");
+            return;
         }
-         long time = 0;
-    int current = 1; // Start at house 1
+        long[] a= new long[n];
+        for ( int i = 0; i < n; i++){
+            a[i] = in.nextInt();
+        }
+        long totalSum = 0;
 
-    for (int i = 0; i < m; i++) {
-        if (arr[i] >= current) {
-            time += arr[i] - current;
-        } else {
-            time += n - current + arr[i]; // wraparound
+        for (long num : a) {
+            totalSum += num;
         }
-        current = arr[i];
-    }
-    out.println(time);
+
+        if (totalSum % 3 != 0) {
+            out.println("0");
+            return;
+        }
+
+        long target = totalSum / 3;
+        long[] suffixCount = new long[n];
+        long suffixSum = 0;
+
+        // Step 1: Count suffixes from right to left
+        for (int i = n - 1; i >= 0; i--) {
+            suffixSum += a[i];
+            if (suffixSum == target) {
+                suffixCount[i] = 1;
+            }
+        }
+
+        // Step 2: Make suffixCount cumulative from right to left
+        for (int i = n - 2; i >= 0; i--) {
+            suffixCount[i] += suffixCount[i + 1];
+        }
+
+        long result = 0;
+        long prefixSum = 0;
+
+        // Step 3: Count valid i using prefix sum and suffixCount
+        for (int i = 0; i < n - 2; i++) {
+            prefixSum += a[i];
+            if (prefixSum == target) {
+                result += suffixCount[i + 2]; // j must be ≥ i+2
+            }
+        }
+        out.println(result);
+
+        
     }
 
     // ----------- Fast Input Class --------------
