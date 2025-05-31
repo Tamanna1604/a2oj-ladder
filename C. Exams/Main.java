@@ -26,33 +26,35 @@ public class Main {
         out.close();
     }
 
-    static void solve() {
-        PriorityQueue<Pair> pq = new PriorityQueue<>((a,b)->b.a-a.a);
-        
+     static void solve() {
         int n = in.nextInt();
+        Pair[] exams = new Pair[n];
+        for (int i = 0; i < n; i++) {
+            int a = in.nextInt(); // scheduled date (recorded)
+            int b = in.nextInt(); // early date (actual)
+            exams[i] = new Pair(a, b);
+        }
 
-         for(int i = 0; i< n; i++){
-            int a = in.nextInt();
-            int b = in.nextInt();
-            Pair pair= new Pair(a,b);
-            pq.offer(pair);
+        // Sort by scheduled date ai (recorded)
+        Arrays.sort(exams, (p1, p2) -> {
+            if (p1.a != p2.a)
+                return Integer.compare(p1.a, p2.a);
+            else
+                return Integer.compare(p1.b, p2.b);
+        });
 
-         }
-         int prev =pq.peek().b;
-         for(int i = 0; i< n; i++){
-            Pair curr = pq.poll();
-            int a = curr.a;
-            int b = curr.b;
-            if(b > prev){
-                b = prev;
-            }
-            else{
-                prev = a;
+        int lastDay = -1; // last actual exam taken date
+        for (Pair exam : exams) {
+            if (exam.b >= lastDay) {
+                lastDay = exam.b;
+            } else {
+                lastDay = exam.a;
             }
         }
-        out.print(prev);
+
+        out.println(lastDay);
     }
-    class Pair{
+    static class Pair{
         int a;
         int b;
         Pair(int a, int b){
